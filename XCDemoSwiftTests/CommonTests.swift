@@ -13,6 +13,13 @@ import XCTest
 
 class CommonTests: XCTestCase {
 
+    func testIndexFromGender_ReturnsWithCorrectIndex() {
+        let index0 = indexFromGender("M")
+        XCTAssertEqual(index0, 0, "Index value for M should be 0")
+        let index1 = indexFromGender("F")
+        XCTAssertEqual(index1, 1, "Index value for F should be 1")
+    }
+
     func testGenderFromIndex_ReturnsWithCorrectGender() {
         let gender0 = genderFromIndex(0)
         XCTAssertEqual(gender0, "Male", "Gender value for 0 should be Male")

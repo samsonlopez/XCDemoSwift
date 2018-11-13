@@ -19,6 +19,19 @@ func formatDate(_ date: Date) -> String {
 }
 
 // Used in gender UI display
+func indexFromGender(_ gender: String) -> Int {
+    var index = 0
+    
+    if gender == "M" {
+        index = 0
+    } else if gender == "F" {
+        index = 1
+    }
+    
+    return index;
+}
+
+// Used in gender UI display
 func genderFromIndex(_ index: Int) -> String {
     var returnStr = ""
     

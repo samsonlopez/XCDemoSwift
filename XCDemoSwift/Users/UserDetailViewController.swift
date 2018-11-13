@@ -40,7 +40,7 @@ class UserDetailViewController: UITableViewController, UITextFieldDelegate, UIPi
     weak var activeTextField: UITextField?
     
     var dobDatePicker: UIDatePicker!
-    var gengerPickerView: UIPickerView!
+    var genderPickerView: UIPickerView!
 
     let dobDateFormatter = DateFormatter()
 
@@ -98,10 +98,10 @@ class UserDetailViewController: UITableViewController, UITextFieldDelegate, UIPi
         dobTextField.inputView = dobDatePicker
         
         // Picker for gender field
-        gengerPickerView = UIPickerView()
-        gengerPickerView.dataSource = self
-        gengerPickerView.delegate = self
-        genderTextField.inputView = gengerPickerView
+        genderPickerView = UIPickerView()
+        genderPickerView.dataSource = self
+        genderPickerView.delegate = self
+        genderTextField.inputView = genderPickerView
         
         
         // Clousures Binding UI response actions to the ViewModel events for input validation.
@@ -166,11 +166,14 @@ class UserDetailViewController: UITableViewController, UITextFieldDelegate, UIPi
         
         if let dob = viewModel.dob {
             dobTextField.text = formatDate(dob)
+            dobDatePicker.date = dob
             print("dob=\(dob.description)")
         }
         
         if let gender = viewModel.gender {
             genderTextField.text = genderFromShortString(gender)
+            let index = indexFromGender(gender)
+            genderPickerView.selectRow(index, inComponent: 0, animated: false)
             print("gender=\(gender)")
         }
         
@@ -190,6 +193,25 @@ class UserDetailViewController: UITableViewController, UITextFieldDelegate, UIPi
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
         self.activeTextField = textField;        
+
+        // To set initial value for dob, gender as picker control only sets value on change.
+        // TODO: Check for alternate/better ways.
+        
+        if (activeTextField == dobTextField) {
+            if(dobTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).count == 0) {
+                dobTextField.text = formatDate(dobDatePicker.date)
+                viewModel.dob = dobDatePicker.date
+                dobTextField.selectAll(nil)
+            }
+            
+        } else if (activeTextField == genderTextField) {
+            if(genderTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).count == 0) {
+                let genderStr = genderFromIndex(0)
+                genderTextField.text = genderStr
+                self.viewModel.gender = genderStr
+                genderTextField.selectAll(nil)
+            }
+        }
     }
     
     // Handles input text fields, passing it to the viewModel
