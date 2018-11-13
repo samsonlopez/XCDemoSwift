@@ -12,7 +12,7 @@ import Foundation
 func formatDate(_ date: Date) -> String {
     let dateFormatter = DateFormatter()
     dateFormatter.dateStyle = DateFormatter.Style.short
-    dateFormatter.dateFormat = "MM'/'dd'/'yyyy"
+    dateFormatter.dateFormat = "dd'/'MM'/'yyyy"
     let formattedDate = dateFormatter.string(from: date)
     
     return formattedDate
